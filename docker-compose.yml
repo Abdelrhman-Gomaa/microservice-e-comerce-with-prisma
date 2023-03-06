@@ -1,0 +1,100 @@
+version: 'version'
+
+services:
+
+  cateloug-auth:
+    build:
+      context: ./
+      dockerfile: ./apps/auth/dockerfile
+    environment:
+      - DB_HOST_NAME = postgres
+      - POSTGRES_USER = user
+      - POSTGRES_PASSWORD = password
+      - POSTGRES_DB = cateloug-auth
+    depends_on:
+      - postgres
+    command: npm run start:dev auth
+
+  cateloug-payment:
+    build:
+      context: ./
+      dockerfile: ./apps/payment/dockerfile
+    environment:
+      - DB_HOST_NAME = postgres
+      - POSTGRES_USER = user
+      - POSTGRES_PASSWORD = password
+      - POSTGRES_DB = cateloug-payment
+    depends_on:
+      - postgres
+    command: npm run start:dev payment
+
+  cateloug-product:
+    build:
+      context: ./
+      dockerfile: ./apps/product/dockerfile
+    environment:
+      - DB_HOST_NAME = postgres
+      - POSTGRES_USER = user
+      - POSTGRES_PASSWORD = password
+      - POSTGRES_DB = cateloug-product
+    depends_on:
+      - postgres
+    command: npm run start:dev product
+
+  cateloug-notification:
+    build:
+      context: ./
+      dockerfile: ./apps/notification/dockerfile
+    environment:
+      - DB_HOST_NAME = postgres
+      - POSTGRES_USER = user
+      - POSTGRES_PASSWORD = password
+      - POSTGRES_DB = cateloug-notification
+    depends_on:
+      - postgres
+    command: npm run start:dev notification
+
+  cateloug-cart:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data_container:/data/db
+
+  api:
+    build:
+      context: ./
+      dockerfile: ./apps/api/dockerfile
+    ports:
+      - '4000:5000'
+    env_file:
+      - .env
+    depends_on:
+      - auth
+      - notification
+      - product
+      - payment
+      - cart
+    command: npm run start:dev api
+
+  postgres:
+    image: postgres
+    ports:
+      - '5433:5433'
+    env_file:
+      - .env
+
+  postgres_admin:
+    image: dpage/pgadmin4
+    depends_on:
+      - postgres
+    ports:
+      - '15432:80'
+    env_file:
+      - .env
+
+volumes:
+  mongodb_data_container:

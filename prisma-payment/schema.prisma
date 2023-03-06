@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/@prisma-payment/prisma/client"
+}
+
+generator typegraphql {
+  provider = "typegraphql-prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("PAYMENT_URL")
+}
+
+model UserStoredPaymentMethod {
+  id                      String                    @id @default(uuid())
+  userId                  String?
+  registrationId          String?
+  gatewayOrderId          String
+  registrationStatus      RegistrationStatusEnum? 
+  cardInfo                Json?
+  bankInfo                Json?
+  paymentMethod           GatewayPaymentMethodEnum?
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime?                 @updatedAt
+}
+
+model StripeWebhook {
+  id                      String            @id @default(uuid())
+  webhookIdOnStripe       String?
+  secret                  String?
+  url                     String?
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime?         @updatedAt
+}
+
+model StripeCustomer {
+  id                      String            @id @default(uuid())
+  stripeCustomerId        String?
+  userId                  String?
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime?         @updatedAt
+}
+
+model Transaction {
+  id                      String            @id @default(uuid())
+  amount                  Float
+  userId                  String
+  paymentMethod           PaymentMethod?
+  paymentStatus           paymentStatus?
+  failureReason           String?
+  cartId                  String
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime?         @updatedAt
+}
+
+enum PaymentMethod {
+  USER_WALLET
+  STRIPE_CREDIT_CARD
+}
+
+enum paymentStatus {
+  SUCCEEDED
+  FAILED
+  PENDED
+  REFUNDED
+}
+
+enum GatewayPaymentMethodEnum {
+  CREDIT_CARD
+  APPLE_PAY
+  MADA
+}
+
+enum RegistrationStatusEnum {
+  SUCCEEDED
+  FAILED
+  PENDED
+}
+
+model Order {
+  id                      String                @id @default(uuid())
+  userId                  String
+  itemsIds                String[]
+  totalPrice              Float
+  paymentMethod           PaymentMethod
+  createdAt               DateTime              @default(now())
+  updatedAt               DateTime?             @updatedAt
+}

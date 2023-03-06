@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/@prisma-auth/prisma/client"
+}
+
+generator typegraphql {
+  provider = "typegraphql-prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("AUTH_URL")
+}
+
+
+model User {
+  id                      String            @id @default(uuid())
+  firstName               String
+  lastName                String
+  fullName                String?
+  slug                    String?
+  email                   String?           @unique
+  notVerifiedPhone        String?
+  verifiedPhone           String?
+  password                String
+  gender                  Gender            @default(MALE)
+  maritalStatus           maritalStatus     @default(SINGLE)
+  role                    Role              @default(USER)
+  birthDate               DateTime?
+  country                 String?
+  address                 String?
+  location                String?
+  profilePicture          String?
+  isBlocked               Boolean           @default(false)
+  isDeleted               Boolean           @default(false)
+  favLang                 String            @default("EN")
+  securityGroup           String?
+  securityGroupId         String?
+  device                  Device?
+  userVerificationCodes   String?
+  spokenLanguages         String?
+  token                   String?
+  fcmTokens               Json?
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime?         @updatedAt
+}
+
+enum Role {
+  USER 
+  ADMIN
+}
+
+enum Device {
+  DESKTOP 
+  IOS 
+  ANDROID
+}
+
+enum maritalStatus {
+  SINGLE 
+  MARRIED 
+  WIDOWED 
+  DIVORCED
+}
+
+enum Gender {
+  MALE 
+  FEMALE
+}

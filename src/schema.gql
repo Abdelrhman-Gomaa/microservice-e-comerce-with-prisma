@@ -1,0 +1,252 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Cart {
+  clientId: String
+  createdAt: DateTime
+  id: String!
+  itemsIds: [String!]!
+  totalPrice: Int!
+  updatedAt: DateTime
+}
+
+input CartCreateInput {
+  clientId: String
+  createdAt: DateTime = "2023-03-06T13:15:21.926Z"
+  id: String
+  itemsIds: cartCreateItemsIdsInput!
+  totalPrice: Int!
+  updatedAt: DateTime = "2023-03-06T13:15:21.927Z"
+}
+
+type Category {
+  createdAt: DateTime
+  id: String!
+  products: [Product!]
+  subCategories: [SubCategory!]
+  title: String!
+  updatedAt: DateTime
+}
+
+input CategoryCreateInput {
+  title: String!
+}
+
+type Construction {
+  delivery: String!
+  generalDimensions: String!
+  material: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+enum DeviceEnum {
+  ANDROID
+  DESKTOP
+  IOS
+}
+
+input EmailAndPasswordLoginForBoardInput {
+  device: DeviceEnum!
+  email: String!
+  fcmToken: String
+  password: String!
+}
+
+enum GenderEnum {
+  FEMALE
+  MALE
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type Mutation {
+  createCart(data: CartCreateInput!): Cart!
+  createCategory(data: CategoryCreateInput!): Category!
+  createProduct(data: ProductCreateInput!): Product!
+  createSubCategory(data: SubCategoryCreateInput!): SubCategory!
+  emailAndPasswordLogin(input: EmailAndPasswordLoginForBoardInput!): User!
+  payment(data: TransactionCreateInput!): Transaction!
+  register(data: UserCreateInput!): User!
+}
+
+enum PaymentMethodEnum {
+  STRIPE_CREDIT_CARD
+  USER_WALLET
+}
+
+enum PaymentStatusEnum {
+  FAILED
+  PENDED
+  REFUNDED
+  SUCCEEDED
+}
+
+type Product {
+  category: Category
+  categoryId: String
+  color: String
+  construction: Construction
+  createdAt: DateTime
+  description: String
+  id: String!
+  instructions: String
+  price: Float!
+  quantity: Float!
+  title: String!
+  updatedAt: DateTime
+}
+
+input ProductCreateInput {
+  categoryId: String
+  color: String
+  createdAt: DateTime
+  delivery: String
+  description: String
+  generalDimensions: String
+  id: String
+  instructions: String
+  material: String
+  price: Float!
+  quantity: Float!
+  title: String!
+  updatedAt: DateTime
+}
+
+type Query {
+  cartsBoard: [Cart!]!
+  categoryBoard: [Category!]!
+  productBoard: [Product!]!
+  subCategoryBoard: [SubCategory!]!
+  usersBoard: [User!]!
+}
+
+enum RoleEnum {
+  ADMIN
+  USER
+}
+
+type SubCategory {
+  category: Category
+  categoryId: String
+  createdAt: DateTime
+  id: String!
+  title: String!
+  updatedAt: DateTime
+}
+
+input SubCategoryCreateInput {
+  categoryId: String!
+  title: String!
+}
+
+type Transaction {
+  amount: Float!
+  cartId: String!
+  createdAt: DateTime
+  failureReason: String
+  id: String!
+  paymentMethod: PaymentMethodEnum!
+  paymentStatus: PaymentStatusEnum!
+  updatedAt: DateTime
+  userId: String!
+}
+
+input TransactionCreateInput {
+  amount: Float!
+  cartId: String!
+  createdAt: DateTime
+  failureReason: String
+  id: String
+  paymentMethod: PaymentMethodEnum!
+  paymentStatus: PaymentStatusEnum!
+  updatedAt: DateTime
+  userId: String!
+}
+
+type User {
+  _count: UserCount!
+  address: String
+  birthDate: DateTime
+  country: String
+  createdAt: DateTime!
+  device: DeviceEnum
+  email: String
+  favLang: String!
+  fcmTokens: JSON
+  firstName: String!
+  fullName: String
+  gender: GenderEnum!
+  id: ID!
+  isBlocked: Boolean!
+  isDeleted: Boolean!
+  lastName: String!
+  location: String
+  maritalStatus: maritalStatusEnum!
+  notVerifiedPhone: String
+  password: String!
+  profilePicture: String
+  role: RoleEnum!
+  securityGroup: String
+  securityGroupId: String
+  slug: String
+  spokenLanguages: String
+  token: String
+  updatedAt: DateTime
+  userVerificationCodes: String
+  verifiedPhone: String
+}
+
+type UserCount {
+  users: Int!
+}
+
+input UserCreateInput {
+  address: String
+  birthDate: DateTime
+  country: String
+  createdAt: DateTime
+  device: DeviceEnum
+  email: String
+  favLang: String
+  fcmTokens: JSON
+  firstName: String!
+  fullName: String
+  gender: GenderEnum
+  id: String
+  isBlocked: Boolean
+  isDeleted: Boolean
+  lastName: String!
+  location: String
+  maritalStatus: maritalStatusEnum
+  notVerifiedPhone: String!
+  password: String!
+  profilePicture: String
+  role: RoleEnum
+  securityGroup: String
+  securityGroupId: String
+  slug: String
+  spokenLanguages: String
+  token: String
+  updatedAt: DateTime
+  userVerificationCodes: String
+  verifiedPhone: String
+}
+
+input cartCreateItemsIdsInput {
+  set: [String!]!
+}
+
+enum maritalStatusEnum {
+  DIVORCED
+  MARRIED
+  SINGLE
+  WIDOWED
+}

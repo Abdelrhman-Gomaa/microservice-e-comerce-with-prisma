@@ -1,0 +1,22 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/@prisma-cart/prisma/client"
+}
+
+generator typegraphql {
+  provider = "typegraphql-prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("CART_URL")
+}
+
+model cart {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  totalPrice Int
+  itemsIds   String[]
+  clientId   String
+  createdAt  DateTime @db.Date
+  updatedAt  DateTime @db.Date
+}

@@ -1,0 +1,1 @@
+export const CREATE_STRIPE = 'CREATE_STRIPE';

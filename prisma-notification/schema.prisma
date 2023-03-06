@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/@prisma-notification/prisma/client"
+}
+
+generator typegraphql {
+  provider = "typegraphql-prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("NOTIFICATION_URL")
+}
+
+model notification {
+  id                      String                  @id @default(uuid())
+  receivers               String[]
+  senderId                String
+  type                    NotificationTypeEnum?
+  thumbnail               String?
+  title                   String?           
+  body                    String?
+  createdAt               DateTime                @default(now())
+  updatedAt               DateTime?               @updatedAt
+}
+
+enum NotificationTypeEnum {
+  PUBLIC
+  NEW_CONTACT_MESSAGE
+}
