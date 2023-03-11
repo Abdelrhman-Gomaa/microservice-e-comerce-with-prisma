@@ -49,13 +49,13 @@ export function generateGqlResponseType<T, K>(
   const filedType = isRawArray
     ? TClass
     : Array.isArray(TClass)
-    ? generateGqlPaginationResponseType<T>(TClass)
-    : TClass;
+      ? generateGqlPaginationResponseType<T>(TClass)
+      : TClass;
   const className = isRawArray
     ? `${TClass[0].name}sArray`
     : Array.isArray(TClass)
-    ? `${TClass[0].name}s`
-    : TClass.name;
+      ? `${TClass[0].name}s`
+      : TClass.name;
 
   @ObjectType(`Gql${className}Response`)
   abstract class GqlResponse {

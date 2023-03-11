@@ -1,16 +1,14 @@
-import { CurrentUser } from 'apps/auth/src/auth-user.decorator';
 import * as bcrypt from 'bcryptjs';
 import { generate } from 'voucher-code-generator';
 import * as slug from 'speakingurl';
 import * as jwt from 'jsonwebtoken';
 import { Inject, Injectable } from '@nestjs/common';
 import { UserCreateInput } from './user/input/user-create.input';
-import { EmailAndPasswordLoginForBoardInput } from './user/input/user.interface';
 import { PrismaServiceAuth } from 'apps/auth/src/prisma/prisma.service.auth';
-import { User } from '@prisma/client';
+import { User } from 'apps/auth/src/prisma-generate/user/user.model';
 import { CONTEXT } from '@nestjs/graphql';
 import { GqlContext } from 'libs/_common/graphql/graphql-context.type';
-// import { User } from './user/model/user.model';
+import { EmailAndPasswordLoginInput } from './user/input/email-password-login.input';
 
 @Injectable()
 export class AuthService {
@@ -44,7 +42,7 @@ export class AuthService {
     }
 
     async emailAndPasswordLoginBoard(
-        input: EmailAndPasswordLoginForBoardInput
+        input: EmailAndPasswordLoginInput
     ) {
         const user = await this.prisma.user.findFirst({ where: { email: input.email } });
         if (!user) throw new Error('Email Dose Not Exists');
@@ -52,6 +50,15 @@ export class AuthService {
         await this.matchPassword(input.password, user.password);
         // return token
         return this.appendAuthTokenToUser(user);
+    }
+
+    async updateCartIdForUser(
+        input: EmailAndPasswordLoginInput
+    ) {
+        const user = await this.prisma.user.findFirst({ where: { email: input.email } });
+        if (!user) throw new Error('Email Dose Not Exists');
+        // compare password
+        return await this.prisma.user.updateMany({where: { email: user.email}, data: { cartId: input.cartId}})
     }
 
     async usersBoard() {
@@ -62,9 +69,11 @@ export class AuthService {
         }
     }
 
-    async findOneUser(currentUser: any) {
+    async findOneUser() {
         try {
-            return await this.prisma.user.findFirst({ where: { id: currentUser.id } });
+            const user = await this.prisma.user.findUnique({ where: { id: "2fe95ccc-156e-40a6-ab4b-7ddabfe64f1e" } });
+            console.log('user >>>>>>>>>>>>>>>>>>', user);
+            return user;
         } catch (error) {
             throw new Error(error.message);
         }
@@ -88,12 +97,13 @@ export class AuthService {
         if (!isMatched) throw new Error(' Incorrect Password');
     }
 
-    private generateAuthToken(id: string): string {
-        return jwt.sign({ userId: id }, process.env.JWT_SECRET);
+    private generateAuthToken(user: User): string {
+        return jwt.sign({ user }, process.env.JWT_SECRET);
     }
 
     private appendAuthTokenToUser(user: User) {
-        return Object.assign(user, { token: this.generateAuthToken(user.id) });
+        
+        return Object.assign(user, { token: this.generateAuthToken(user) });
     }
 
 }

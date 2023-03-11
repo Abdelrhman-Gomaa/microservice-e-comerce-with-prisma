@@ -1,3 +1,6 @@
 export const CREATE_CART = 'CREATE_CART';
 export const CARTS_BOARD = 'CARTS_BOARD';
-export const FIND_OND_CART = 'FIND_OND_CART';
+export const FIND_ONE_CART = 'FIND_ONE_CART';
+export const DELETE_CART = 'DELETE_CART';
+export const DELETE_CART_FOR_USER = 'DELETE_CART_FOR_USER';
+export const UPDATE_CART_CLIENT = 'UPDATE_CART_CLIENT';

@@ -1,21 +1,16 @@
-import { User } from 'apps/auth/src/user/model/user.model';
 import { Injectable } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
-import { Inject } from '@nestjs/common';
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
-import { IContextAuthService } from './context-auth.interface';
 import { TokenPayload } from 'apps/auth/src/auth-token-payload.type';
 import { isISO31661Alpha2 } from 'class-validator';
 import { LangEnum } from 'apps/auth/src/user/user.enum';
-import { PrismaServiceAuth } from 'apps/auth/src/prisma/prisma.service.auth';
 
 
 @Injectable()
 export class ContextAuthService {
   constructor(
     private readonly config: ConfigService,
-    private readonly prisma: PrismaServiceAuth
   ) { }
 
   getAuthToken(req: Request): string {
@@ -40,8 +35,7 @@ export class ContextAuthService {
   async getUserFromReqHeaders(req: Request) {
     let token = this.getAuthToken(req);
     if (!token) return null;
-    let { userId } = <TokenPayload>jwt.verify(token, this.config.get('JWT_SECRET'));
-    const user = await this.prisma.user.findFirst({ where: { id: userId } });
+    let { user } = <TokenPayload>jwt.verify(token, this.config.get('JWT_SECRET'));
     return user;
   }
 

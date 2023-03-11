@@ -10,6 +10,11 @@ generator typegraphql {
   provider = "typegraphql-prisma"
 }
 
+generator nestgraphql {
+  provider = "node node_modules/prisma-nestjs-graphql"
+  output = "../apps/auth/src/prisma-generate"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("AUTH_URL")
@@ -44,6 +49,7 @@ model User {
   spokenLanguages         String?
   token                   String?
   fcmTokens               Json?
+  cartId                  String?           
   createdAt               DateTime          @default(now())
   updatedAt               DateTime?         @updatedAt
 }

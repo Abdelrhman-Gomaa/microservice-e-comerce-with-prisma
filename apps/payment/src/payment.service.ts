@@ -4,7 +4,7 @@ import { TransactionCreateInput, UpdatePaymentTransaction } from './transaction/
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 import { Transaction } from './transaction/model/transaction.model';
-import { User } from 'apps/auth/src/user/model/user.model';
+import { User } from 'apps/auth/src/prisma-generate/user/user.model';
 import { Cart } from 'apps/cart/src/cart/model/cart.model';
 @Injectable()
 export class PaymentService {

@@ -14,8 +14,8 @@ export class CartCreateInput {
     @Field(() => String, { nullable: true })
     id?: string;
 
-    @Field(() => Int, { nullable: false })
-    totalPrice: number;
+    @Field(() => Int, { nullable: true })
+    totalPrice?: number;
 
     @Field(() => cartCreateItemsIdsInput, { nullable: false })
     itemsIds: cartCreateItemsIdsInput;

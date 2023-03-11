@@ -11,7 +11,7 @@ export class SubCategory {
     @Field(() => String, { nullable: false })
     title: string;
 
-    @Field(() => Category, {nullable:true})
+    // @Field(() => Category, {nullable:true})
     category?: Category;
 
     @Field(() => String, {nullable:true})

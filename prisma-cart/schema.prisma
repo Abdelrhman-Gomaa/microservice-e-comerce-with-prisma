@@ -13,10 +13,10 @@ datasource db {
 }
 
 model cart {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  totalPrice Int
-  itemsIds   String[]
-  clientId   String
-  createdAt  DateTime @db.Date
-  updatedAt  DateTime @db.Date
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  totalPrice    Int
+  itemsIds      String[]
+  clientId      String?
+  createdAt     DateTime @db.Date
+  updatedAt     DateTime @db.Date
 }

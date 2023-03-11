@@ -44,17 +44,16 @@ import { GqlConfigService } from 'libs/_common/graphql/graphql.provider';
         }
       },
     ]),
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      useClass: GqlConfigService,
+      imports: [ContextModule]
+    }),
     // GraphQLModule.forRoot<ApolloDriverConfig>({
     //   driver: ApolloDriver,
     //   autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     //   sortSchema: true,
     // }),
-    GraphQLModule.forRootAsync<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      imports: [ContextModule, PrismaModuleAuth],
-      useClass: GqlConfigService,
-      inject: [ContextAuthService]
-    }),
   ],
   providers: [AppService, AppResolver],
 })

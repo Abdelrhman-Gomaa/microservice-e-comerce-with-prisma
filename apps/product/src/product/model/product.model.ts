@@ -31,7 +31,7 @@ export class Product {
     @Field(() => Construction, { nullable: true })
     construction?: Construction;
 
-    @Field(() => Category, { nullable: true })
+    // @Field(() => Category, { nullable: true })
     category?: Category;
 
     @IsUUID()

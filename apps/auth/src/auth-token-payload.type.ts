@@ -1,3 +1,5 @@
+import { User } from './prisma-generate/user/user.model';
+
 export interface TokenPayload {
-  userId: string;
+  user: User;
 }

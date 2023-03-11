@@ -5,17 +5,15 @@ import { CreateOneProductArgs } from './../../product/src/product/input/product-
 import { CreateOneCategoryArgs, CreateOneSubCategoryArgs } from './../../product/src/product/input/category.create.input';
 import { Category } from './../../product/src/product/model/category.model';
 import { CreateOneUserArgs } from './../../auth/src/user/input/user-create.input';
-import { Resolver, Mutation, Args, Query, Context } from '@nestjs/graphql';
-import { User } from 'apps/auth/src/user/model/user.model';
+import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { AppService } from './app.service';
-import { EmailAndPasswordLoginForBoardInput } from 'apps/auth/src/user/input/user.interface';
 import { CreateOneCartArgs } from 'apps/cart/src/cart/input/cart-create.input';
-import { Transaction } from 'apps/payment/src/transaction/model/transaction.model';
 import { CreateOneTransactionArgs } from 'apps/payment/src/transaction/input/transaction.input';
-import { CurrentUser } from 'apps/auth/src/auth-user.decorator';
+import { EmailAndPasswordLoginArgs } from 'apps/auth/src/user/input/email-password-login.input';
+import { User } from 'apps/auth/src/prisma-generate/user/user.model';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'apps/auth/src/auth.guard';
-import { CreateOneOrderArgs } from 'apps/payment/src/order/input/order.input';
+// import { GqlUserResponse, GqlUsersResponse } from './response/user.response';
 
 @Resolver()
 export class AppResolver {
@@ -30,14 +28,18 @@ export class AppResolver {
     }
 
     @Mutation(() => User)
-    async emailAndPasswordLogin(@Args('input') input: EmailAndPasswordLoginForBoardInput) {
-        return await this.appService.emailAndPasswordLogin(input);
+    async emailAndPasswordLogin(@Args() input: EmailAndPasswordLoginArgs) {
+        return await this.appService.emailAndPasswordLogin(input.data);
     }
 
-    @UseGuards(AuthGuard)
     @Query(() => [User])
     async usersBoard() {
         return await this.appService.usersBoard();
+    }
+
+    @Query(() => User)
+    async findUser() {
+        return await this.appService.findUser();
     }
 
     // ----------------------------------------------- Product -----------------------------------------------

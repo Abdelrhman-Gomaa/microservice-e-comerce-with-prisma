@@ -13,11 +13,11 @@ type Cart {
 
 input CartCreateInput {
   clientId: String
-  createdAt: DateTime = "2023-03-06T13:15:21.926Z"
+  createdAt: DateTime = "2023-03-08T13:19:02.226Z"
   id: String
   itemsIds: cartCreateItemsIdsInput!
-  totalPrice: Int!
-  updatedAt: DateTime = "2023-03-06T13:15:21.927Z"
+  totalPrice: Int
+  updatedAt: DateTime = "2023-03-08T13:19:02.226Z"
 }
 
 type Category {
@@ -44,17 +44,29 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+enum Device {
+  ANDROID
+  DESKTOP
+  IOS
+}
+
 enum DeviceEnum {
   ANDROID
   DESKTOP
   IOS
 }
 
-input EmailAndPasswordLoginForBoardInput {
+input EmailAndPasswordLoginInput {
+  cartId: String
   device: DeviceEnum!
   email: String!
   fcmToken: String
   password: String!
+}
+
+enum Gender {
+  FEMALE
+  MALE
 }
 
 enum GenderEnum {
@@ -72,8 +84,8 @@ type Mutation {
   createCategory(data: CategoryCreateInput!): Category!
   createProduct(data: ProductCreateInput!): Product!
   createSubCategory(data: SubCategoryCreateInput!): SubCategory!
-  emailAndPasswordLogin(input: EmailAndPasswordLoginForBoardInput!): User!
-  payment(data: TransactionCreateInput!): Transaction!
+  emailAndPasswordLogin(data: EmailAndPasswordLoginInput!): User!
+  payment(data: TransactionCreateInput!): Boolean!
   register(data: UserCreateInput!): User!
 }
 
@@ -90,7 +102,6 @@ enum PaymentStatusEnum {
 }
 
 type Product {
-  category: Category
   categoryId: String
   color: String
   construction: Construction
@@ -123,9 +134,15 @@ input ProductCreateInput {
 type Query {
   cartsBoard: [Cart!]!
   categoryBoard: [Category!]!
+  findUser: User!
   productBoard: [Product!]!
   subCategoryBoard: [SubCategory!]!
   usersBoard: [User!]!
+}
+
+enum Role {
+  ADMIN
+  USER
 }
 
 enum RoleEnum {
@@ -134,7 +151,6 @@ enum RoleEnum {
 }
 
 type SubCategory {
-  category: Category
   categoryId: String
   createdAt: DateTime
   id: String!
@@ -147,20 +163,7 @@ input SubCategoryCreateInput {
   title: String!
 }
 
-type Transaction {
-  amount: Float!
-  cartId: String!
-  createdAt: DateTime
-  failureReason: String
-  id: String!
-  paymentMethod: PaymentMethodEnum!
-  paymentStatus: PaymentStatusEnum!
-  updatedAt: DateTime
-  userId: String!
-}
-
 input TransactionCreateInput {
-  amount: Float!
   cartId: String!
   createdAt: DateTime
   failureReason: String
@@ -168,32 +171,32 @@ input TransactionCreateInput {
   paymentMethod: PaymentMethodEnum!
   paymentStatus: PaymentStatusEnum!
   updatedAt: DateTime
-  userId: String!
+  userId: String
 }
 
 type User {
-  _count: UserCount!
   address: String
   birthDate: DateTime
+  cartId: String
   country: String
   createdAt: DateTime!
-  device: DeviceEnum
+  device: Device
   email: String
   favLang: String!
   fcmTokens: JSON
   firstName: String!
   fullName: String
-  gender: GenderEnum!
+  gender: Gender!
   id: ID!
   isBlocked: Boolean!
   isDeleted: Boolean!
   lastName: String!
   location: String
-  maritalStatus: maritalStatusEnum!
+  maritalStatus: maritalStatus!
   notVerifiedPhone: String
   password: String!
   profilePicture: String
-  role: RoleEnum!
+  role: Role!
   securityGroup: String
   securityGroupId: String
   slug: String
@@ -204,13 +207,10 @@ type User {
   verifiedPhone: String
 }
 
-type UserCount {
-  users: Int!
-}
-
 input UserCreateInput {
   address: String
   birthDate: DateTime
+  cartId: String
   country: String
   createdAt: DateTime
   device: DeviceEnum
@@ -242,6 +242,13 @@ input UserCreateInput {
 
 input cartCreateItemsIdsInput {
   set: [String!]!
+}
+
+enum maritalStatus {
+  DIVORCED
+  MARRIED
+  SINGLE
+  WIDOWED
 }
 
 enum maritalStatusEnum {

@@ -90,6 +90,9 @@ export class UserCreateInput {
     @Field(() => String, { nullable: true })
     token?: string;
 
+    @Field(() => String, { nullable: true })
+    cartId?: string;
+
     @Field(() => Date, { nullable: true })
     createdAt?: Date | string;
 

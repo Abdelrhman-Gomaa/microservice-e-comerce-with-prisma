@@ -59,6 +59,10 @@ export class ProductService {
     return await this.prisma.subCategory.findMany();
   }
 
+  async productForOneCart(ids: string[]) {
+    return await this.prisma.product.findMany({ where: { id : {in: ids }} });
+  }
+
   private async categoryIsExist(categoryId: string) {
     const categoryExist = await this.prisma.category.findFirst({ where: { id: categoryId } });
     if (!categoryExist) throw new Error(`Cannot find category with Id ${categoryId}`);

@@ -1,4 +1,4 @@
-import { User } from 'apps/auth/src/user/model/user.model';
+import { User } from 'apps/auth/src/prisma-generate/user/user.model';
 import { Timezone } from '../graphql/graphql-response.type';
 import { Request } from 'express';
 import { LangEnum } from 'apps/auth/src/user/user.enum';

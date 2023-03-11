@@ -1,6 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma-auth/prisma/client';
 import { INestApplication, Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-
 
 @Injectable()
 export class PrismaServiceAuth extends PrismaClient implements OnModuleInit, OnModuleDestroy {
@@ -12,14 +11,8 @@ export class PrismaServiceAuth extends PrismaClient implements OnModuleInit, OnM
   async onModuleInit() {
     await this.$connect();
   }
-  
-  // async enableShutdownHooks(app: INestApplication) {
-  //   this.$on('beforeExit', async () => {
-  //     await app.close();
-  //   });
-  // }
-  
-    async onModuleDestroy() {
-      await this.$disconnect();
+
+  async onModuleDestroy() {
+    await this.$disconnect();
   }
 }

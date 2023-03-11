@@ -14,27 +14,3 @@ export class FcmTokensType {
     ios?: string;
     desktop?: string;
 }
-
-@InputType()
-export class EmailAndPasswordLoginForBoardInput {
-  @IsEmail()
-  @IsNotEmpty()
-  @Field()
-  email: string;
-
-  @Field()
-  @MinLength(6)
-  @MaxLength(30)
-  @IsNotEmpty()
-  password: string;
-
-  @Field({ nullable: true })
-  @IsString()
-  @IsOptional()
-  fcmToken?: string;
-
-  @Field(type => DeviceEnum)
-  @IsEnum(DeviceEnum)
-  @IsNotEmpty()
-  device: Device;
-}

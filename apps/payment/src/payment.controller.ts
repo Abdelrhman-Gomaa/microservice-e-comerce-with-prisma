@@ -1,5 +1,4 @@
-import { OrderCreateInput } from './order/input/order.input';
-import { User } from 'apps/auth/src/user/model/user.model';
+import { User } from 'apps/auth/src/prisma-generate/user/user.model';
 import { Controller, Get, Post } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { Cart } from 'apps/cart/src/cart/model/cart.model';

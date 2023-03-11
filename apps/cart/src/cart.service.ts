@@ -30,4 +30,20 @@ export class CartService {
     return this.prisma.cart.findFirst({ where: { id } });
   }
 
+  async deleteCart(id: string) {
+    return this.prisma.cart.delete({ where: { id } });
+  }
+
+  async deleteCartForUser(userId: string) {
+    return this.prisma.cart.deleteMany({ where: { clientId: userId } });
+  }
+
+  async updateCartClient(cartId: string, clientId: string) {
+    const cart = await this.prisma.cart.updateMany({
+      where: { id: cartId },
+      data: { clientId: clientId }
+    });
+    return cart;
+  }
+
 }
